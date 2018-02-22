@@ -1,7 +1,14 @@
 ---
 # defaults file for rahal.prometheus-exporters
 
+##################################### NGINX SETUP ################################
+# Important, nginx should be setup with lua activated ( nginx-extras )
 nginx_exporter: True
-nginx_lua_package_path: /opt/lua-packages
+
+# do a service nginx reload after updating configs
+nginx_is_service: True
+# where to put lua packages
+nginx_lua_package_path: /opt/lua_packages
 nginx_prometheus_metrics_port: 9527
+# where to copy config vhosts
 nginx_vhost_path: /etc/nginx/sites-enabled
