@@ -1,0 +1,36 @@
+---
+# tasks file for rahal.prometheus-exporters
+ 
+- name: lua-packages directory
+  file: path='{{ nginx_lua_package_path }}' state=directory
+
+- name: dowload the lua package
+  get_url:
+    url: https://raw.githubusercontent.com/knyar/nginx-lua-prometheus/master/prometheus.lua
+    dest: "{{ nginx_lua_package_path }}/prometheus.lua"
+    mode: 0444
+
+- name: copy the metrics config to nginx vhosts
+  action: >
+    template src=nginx_metrics.conf.j2 dest={{nginx_vhost_path}}/prometheus-metrics.conf
+    mode=0644 owner=root group=root
+  notify:
+    - reload nginx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

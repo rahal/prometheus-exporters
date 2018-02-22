@@ -1,0 +1,21 @@
+---
+# tasks file for rahal.prometheus-exporters
+
+    
+- include: nginx-exporter.yml
+  when: nginx_exporter == True
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

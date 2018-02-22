@@ -1,0 +1,7 @@
+---
+# defaults file for rahal.prometheus-exporters
+
+nginx_exporter: True
+nginx_lua_package_path: /opt/lua-packages
+nginx_prometheus_metrics_port: 9527
+nginx_vhost_path: /etc/nginx/sites-enabled
