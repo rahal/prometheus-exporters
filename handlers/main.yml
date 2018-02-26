@@ -8,5 +8,11 @@
 
 # start exporter mysql
 - name: start mysql exporter
-  command: {{ mysql_exporter_clone_path }}/mysql_exporter
+  docker_service:
+    project_src: "{{ root_monitoring_mysql }}"
+    project_name: prom_mysql_exporter
+  environment:
+      PORT: 9104
+      MYSQL_CONTAINER: mysql_apps
+      DATA_SOURCE_NAME: "root@root:bdd
 

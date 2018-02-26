@@ -1,6 +1,10 @@
 ---
 # defaults file for rahal.prometheus-exporters
 
+
+root_monitoring: /opt/monitoring
+
+
 ##################################### NGINX SETUP ################################
 # Important, nginx should be setup with lua activated ( nginx-extras )
 nginx_exporter: True
@@ -20,4 +24,4 @@ nginx_vhost_path: /etc/nginx/sites-enabled
 # CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'XXXXXXXX' WITH MAX_USER_CONNECTIONS 3;
 #GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
 mysql_exporter: True
-mysql_exporter_clone_path: /opt/mysql_exporter
+root_monitoring_mysql: "{{ root_monitoring }}/mysql"

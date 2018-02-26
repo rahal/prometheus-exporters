@@ -1,3 +1,6 @@
+dependencies:
+  - geerlingguy.docker
+
 galaxy_info:
   author: rahal
   description: prometheus exporters
