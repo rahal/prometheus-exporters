@@ -2,7 +2,8 @@
 # tasks file for mysql exporter
 
 
-
+- name: monitoring mysql directory
+  file: path='{{ root_monitoring_mysql }}' state=directory
 
 - name: Pull the lateste version
   command: docker pull prom/mysqld-exporter

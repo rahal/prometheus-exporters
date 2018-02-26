@@ -14,5 +14,5 @@
   environment:
       PORT: 9104
       MYSQL_CONTAINER: mysql_apps
-      DATA_SOURCE_NAME: "root@root:bdd
+      DATA_SOURCE_NAME: "root@root:bdd"
 
