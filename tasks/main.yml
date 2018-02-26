@@ -5,6 +5,9 @@
 - include: nginx-exporter.yml
   when: nginx_exporter == True
 
+- include: mysql-exporter.yml
+  when: mysql_exporter == True
+
 
 
 

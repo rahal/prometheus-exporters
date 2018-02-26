@@ -1,7 +1,12 @@
 ---
 # handlers file for rahal.prometheus-exporters
 
-
 - name: reload nginx
   service: name=nginx state=reloaded
   when: (nginx_is_service == True)
+
+
+# start exporter mysql
+- name: start mysql exporter
+  command: {{ mysql_exporter_clone_path }}/mysql_exporter
+

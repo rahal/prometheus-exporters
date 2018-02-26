@@ -12,3 +12,12 @@ nginx_lua_package_path: /opt/lua_packages
 nginx_prometheus_metrics_port: 9527
 # where to copy config vhosts
 nginx_vhost_path: /etc/nginx/sites-enabled
+
+
+##################################### Mysql SETUP ################################
+# official exporter : https://github.com/prometheus/mysqld_exporter
+# important : need grants
+# CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'XXXXXXXX' WITH MAX_USER_CONNECTIONS 3;
+#GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
+mysql_exporter: True
+mysql_exporter_clone_path: /opt/mysql_exporter
