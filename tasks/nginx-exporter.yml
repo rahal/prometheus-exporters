@@ -1,5 +1,5 @@
 ---
-# tasks file for rahal.prometheus-exporters
+# tasks file for nginx-exporter
  
 - name: lua-packages directory
   file: path='{{ nginx_lua_package_path }}' state=directory

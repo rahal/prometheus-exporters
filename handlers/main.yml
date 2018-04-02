@@ -10,9 +10,11 @@
 - name: start mysql exporter
   docker_service:
     project_src: "{{ root_monitoring_mysql }}"
-    project_name: prom_mysql_exporter
+    project_name: "prom_exporter_{{ item.name }}"
   environment:
-      PORT: 9104
-      MYSQL_CONTAINER: mysql_apps
-      DATA_SOURCE_NAME: "root@root:bdd"
+      PORT: "{{ item.prom_port }}"
+      MYSQL_CONTAINER: "{{ item.name }}"
+      DATA_SOURCE_NAME: "{{ item.user }}:{{ item.pass }}@tcp(bdd:{{ item.port }})/"
+      NETWORK_MODE: "{{ item.network }}"
+  with_items: "{{ mysql_containers }}"
 

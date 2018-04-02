@@ -5,7 +5,7 @@
 - name: monitoring mysql directory
   file: path='{{ root_monitoring_mysql }}' state=directory
 
-- name: Pull the lateste version
+- name: Pull the latest version
   command: docker pull prom/mysqld-exporter
 
 - name: copy the docker-compose file
@@ -14,3 +14,7 @@
     mode=0644 owner=root group=root
   notify:
     - start mysql exporter
+
+- name: make sure mysql exporter is started
+  command: /bin/true
+  notify: start mysql exporter
