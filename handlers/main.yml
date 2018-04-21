@@ -18,3 +18,29 @@
       NETWORK_MODE: "{{ item.network }}"
   with_items: "{{ mysql_containers }}"
 
+
+# start exporter php
+- name: start php exporter
+  docker_service:
+    project_src: "{{ root_monitoring_php }}"
+    project_name: "php_exporter_{{ item.name }}"
+  environment:
+      PORT: "{{ item.prom_port }}"
+      PHP_CONTAINER: "{{ item.name }}"
+      FASTCGI_URL: "tcp://{{ item.name }}:{{ item.port }}/status"
+      NETWORK_MODE: "{{ item.network }}"
+  with_items: "{{ php_containers }}"
+
+
+# start memcached exporter
+- name: start memcached exporter
+  docker_service:
+    project_src: "{{ root_monitoring_memcached }}"
+    project_name: "mmc_exporter_{{ item.name }}"
+  environment:
+      PORT: "{{ item.prom_port }}"
+      MEMCACHED_CONTAINER: "{{ item.name }}"
+      FASTCGI_URL: "tcp://{{ item.name }}:{{ item.port }}/status"
+      NETWORK_MODE: "{{ item.network }}"
+  with_items: "{{ memcached_containers }}"
+

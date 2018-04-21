@@ -5,6 +5,29 @@
 root_monitoring: /opt/monitoring
 
 
+##################################### NODE EXPORTER SETUP ################################
+
+node_exporter: True
+
+prometheus_node_exporter_version: 0.15.2
+prometheus_node_exporter_enabled_collectors:
+  - conntrack
+  - cpu
+  - diskstats
+  - entropy
+  - filefd
+  - filesystem
+  - loadavg
+  - mdadm
+  - meminfo
+  - netdev
+  - netstat
+  - stat
+  - textfile
+  - time
+  - vmstat
+
+
 ##################################### NGINX SETUP ################################
 # Important, nginx should be setup with lua activated ( nginx-extras )
 nginx_exporter: True
@@ -16,6 +39,9 @@ nginx_lua_package_path: /opt/lua_packages
 nginx_prometheus_metrics_port: 9527
 # where to copy config vhosts
 nginx_vhost_path: /etc/nginx/sites-enabled
+nginx_main_config: /etc/nginx/nginx.conf
+# Usualy not a very good idea to touch main nginx config as can be ansible ( or other tool) managed) 
+nginx_activate_lua: True
 
 
 ##################################### Mysql SETUP ################################
@@ -25,3 +51,28 @@ nginx_vhost_path: /etc/nginx/sites-enabled
 #GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
 mysql_exporter: True
 root_monitoring_mysql: "{{ root_monitoring }}/mysql"
+
+
+
+
+##################################### Php SETUP ################################
+# official exporter : https://github.com/bakins/php-fpm-exporter
+# docker version
+php_exporter: True
+# version tag
+php_exporter_version: "v0.4.1"
+root_monitoring_php: "{{ root_monitoring }}/php"
+
+
+
+
+##################################### Memcached SETUP ################################
+# official exporter : https://github.com/prometheus/memcached_exporter
+
+# docker version
+memcached_exporter: True
+# version tag
+memcached_exporter_version: "v0.4.1"
+root_monitoring_memcached: "{{ root_monitoring }}/memcached"
+
+

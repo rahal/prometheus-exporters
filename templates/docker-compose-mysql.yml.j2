@@ -3,6 +3,7 @@ services:
   mysql_exporter:
     restart: always
     image: prom/mysqld-exporter
+    network_mode: ${NETWORK_MODE}
     environment:
       - DATA_SOURCE_NAME=${DATA_SOURCE_NAME}
     external_links:

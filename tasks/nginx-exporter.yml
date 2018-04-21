@@ -1,5 +1,5 @@
 ---
-# tasks file for nginx-exporter
+# tasks file for nginx exporter
  
 - name: lua-packages directory
   file: path='{{ nginx_lua_package_path }}' state=directory
@@ -9,6 +9,29 @@
     url: https://raw.githubusercontent.com/knyar/nginx-lua-prometheus/master/prometheus.lua
     dest: "{{ nginx_lua_package_path }}/prometheus.lua"
     mode: 0444
+
+- name: Check that mod-http-lua exists
+  stat:
+    path: /etc/nginx/modules-enabled/50-mod-http-lua.conf
+  register: lua_exists
+
+- name: read the main config file
+  shell: cat "{{ nginx_main_config }}"
+  register: main_config
+  when: nginx_activate_lua == True 
+
+- name: Activate Modules lua
+  blockinfile:
+    dest: "{{ nginx_main_config }}"
+    block: |
+      # http-lua ( ndk as dependency )
+      include /etc/nginx/modules-enabled/10-mod-http-ndk.conf;
+      include /etc/nginx/modules-enabled/50-mod-http-lua.conf;
+    insertbefore: "^events {"
+  when: nginx_activate_lua == True and lua_exists.stat.exists == True and main_config.stdout.find('50-mod-http-lua.conf') == -1
+  notify:
+    - reload nginx
+
 
 - name: copy the metrics config to nginx vhosts
   action: >

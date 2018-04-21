@@ -1,0 +1,20 @@
+---
+# tasks file for php exporter
+
+
+- name: monitoring php directory
+  file: path='{{ root_monitoring_php }}' state=directory
+
+- name: Pull the latest version
+  command: docker pull bakins/php-fpm-exporter:{{ php_exporter_version }}
+
+- name: copy the docker-compose file
+  action: >
+    template src=docker-compose-php.yml.j2 dest={{root_monitoring_php}}/docker-compose.yml
+    mode=0644 owner=root group=root
+  notify:
+    - start php exporter
+
+- name: make sure php exporter is started
+  command: /bin/true
+  notify: start php exporter

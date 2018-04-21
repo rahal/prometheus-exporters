@@ -1,12 +1,21 @@
 ---
 # tasks file for rahal.prometheus-exporters
+- include: node-exporter.yml
+  when: node_exporter == True
 
-    
+- include: php-exporter.yml
+  when: php_exporter == True
+
 - include: nginx-exporter.yml
   when: nginx_exporter == True
 
 - include: mysql-exporter.yml
   when: mysql_exporter == True
+
+- include: memcached-exporter.yml
+  when: memcached_exporter == True
+
+
 
 
 

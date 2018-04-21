@@ -57,3 +57,5 @@ dependencies:
   # if you add dependencies to this list.
   - geerlingguy.docker
   - geerlingguy.pip
+  - UnderGreen.prometheus-exporters-common
+  - UnderGreen.prometheus-node-exporter

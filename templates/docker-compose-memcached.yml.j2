@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  memcached_exporter:
+    restart: always
+    image: quay.io/prometheus/memcached-exporter:v0.4.1
+    network_mode: ${NETWORK_MODE}
+    ports:
+      - ${PORT}:9150
+    command: --memcached.address ${MEMCACHED_ADRESS}

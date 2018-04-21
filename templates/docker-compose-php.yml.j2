@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  php_exporter:
+    restart: always
+    image: bakins/php-fpm-exporter:{{ php_exporter_version }}
+    network_mode: ${NETWORK_MODE}
+    environment:
+      - COMMAND_ARGS= "--fastcgi ${FASTCGI_URL}"
+    ports:
+      - ${PORT}:8080
+    command: --fastcgi ${FASTCGI_URL} --addr 0.0.0.0:8080
