@@ -38,8 +38,8 @@
   with_items: "{{ mysql_hosts }}"
 
 
-# start exporter php
-- name: start php exporter
+# start exporter php for containers
+- name: start php exporter for containers
   docker_service:
     project_src: "{{ root_monitoring_php }}"
     project_name: "php_exporter_{{ item.name }}"
@@ -49,6 +49,29 @@
       FASTCGI_URL: "tcp://{{ item.name }}:{{ item.port }}/status"
       NETWORK_MODE: "{{ item.network }}"
   with_items: "{{ php_containers }}"
+
+# start exporter php
+- name: start php exporter
+  docker_service:
+    project_name: "php_exporter_{{ item.name }}"
+    definition:
+      version: '2'
+      services:
+        php_exporter:
+          restart: always
+          image: "bakins/php-fpm-exporter:{{ php_exporter_version }}"
+          network_mode: bridge
+          extra_hosts:
+            phpfpm: "{{ item.ip }}"
+          environment:
+            - COMMAND_ARGS= "--fastcgi ${FASTCGI_URL}"
+          ports:
+            - "${PORT}:8080"
+          command: --fastcgi ${FASTCGI_URL} --addr 0.0.0.0:8080
+  environment:
+      PORT: "{{ item.prom_port }}"
+      FASTCGI_URL: "tcp://phpfpm:{{ item.port }}/status"
+  with_items: "{{ php_hosts }}"
 
 
 # start memcached exporter
