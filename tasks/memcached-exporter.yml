@@ -7,14 +7,21 @@
 
 - name: Pull the latest version
   command: docker pull quay.io/prometheus/memcached-exporter:{{ memcached_exporter_version }}
+  when: memcached_containers is defined and memcached_hosts is defined
 
 - name: copy the docker-compose file
   action: >
     template src=docker-compose-memcached.yml.j2 dest={{root_monitoring_memcached}}/docker-compose.yml
     mode=0644 owner=root group=root
   notify:
-    - start memcached exporter
+    - start memcached exporter for containers
+
+- name: make sure memcached exporter is started for containers
+  command: /bin/true
+  notify: start memcached exporter for containers
+  when: memcached_containers is defined
 
 - name: make sure memcached exporter is started
   command: /bin/true
   notify: start memcached exporter
+  when: memcached_hosts is defined

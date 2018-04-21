@@ -63,8 +63,6 @@
           network_mode: bridge
           extra_hosts:
             phpfpm: "{{ item.ip }}"
-          environment:
-            - COMMAND_ARGS= "--fastcgi ${FASTCGI_URL}"
           ports:
             - "${PORT}:8080"
           command: --fastcgi ${FASTCGI_URL} --addr 0.0.0.0:8080
@@ -74,15 +72,36 @@
   with_items: "{{ php_hosts }}"
 
 
-# start memcached exporter
-- name: start memcached exporter
+# start memcached exporter for containers
+- name: start memcached exporter for containers
   docker_service:
     project_src: "{{ root_monitoring_memcached }}"
     project_name: "mmc_exporter_{{ item.name }}"
   environment:
       PORT: "{{ item.prom_port }}"
       MEMCACHED_CONTAINER: "{{ item.name }}"
-      FASTCGI_URL: "tcp://{{ item.name }}:{{ item.port }}/status"
+      MEMCACHED_ADDRESS: "memcached:{{ item.port }}"
       NETWORK_MODE: "{{ item.network }}"
   with_items: "{{ memcached_containers }}"
+
+# start memcached exporter
+- name: start memcached exporter
+  docker_service:
+    project_name: "mmc_exporter_{{ item.name }}"
+    definition:
+      version: '2'
+      services:
+        memcached_exporter:
+          restart: always
+          image: quay.io/prometheus/memcached-exporter:v0.4.1
+          network_mode: bridged
+          extra_hosts:
+            memcached: "{{ item.ip }}"
+          ports:
+            - ${PORT}:9150
+          command: --memcached.address ${MEMCACHED_ADDRESS}
+  environment:
+      PORT: "{{ item.prom_port }}"
+      MEMCACHED_ADDRESS: "memcached:{{ item.port }}"
+  with_items: "{{ memcached_hosts }}"
 

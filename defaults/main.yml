@@ -57,6 +57,7 @@ root_monitoring_mysql: "{{ root_monitoring }}/mysql"
 
 ##################################### Php SETUP ################################
 # official exporter : https://github.com/bakins/php-fpm-exporter
+# Needs status to be active in php pool
 # docker version
 php_exporter: True
 # version tag

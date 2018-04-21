@@ -7,4 +7,6 @@ services:
     network_mode: ${NETWORK_MODE}
     ports:
       - ${PORT}:9150
-    command: --memcached.address ${MEMCACHED_ADRESS}
+    external_links:
+      - ${MEMCACHED_CONTAINER}:memcached
+    command: --memcached.address ${MEMCACHED_ADDRESS}
