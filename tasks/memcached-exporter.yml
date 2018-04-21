@@ -15,6 +15,7 @@
     mode=0644 owner=root group=root
   notify:
     - start memcached exporter for containers
+  when: memcached_containers is defined
 
 - name: make sure memcached exporter is started for containers
   command: /bin/true
