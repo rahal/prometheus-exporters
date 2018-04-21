@@ -7,7 +7,7 @@
 
 
 # start exporter mysql
-- name: start mysql exporter
+- name: start mysql exporter for containers
   docker_service:
     project_src: "{{ root_monitoring_mysql }}"
     project_name: "prom_exporter_{{ item.name }}"
@@ -17,6 +17,25 @@
       DATA_SOURCE_NAME: "{{ item.user }}:{{ item.pass }}@tcp(bdd:{{ item.port }})/"
       NETWORK_MODE: "{{ item.network }}"
   with_items: "{{ mysql_containers }}"
+
+# start exporter mysql
+- name: start mysql exporter
+  docker_service:
+    project_name: "prom_exporter_{{ item.name }}"
+    definition:
+      version: '2'
+      services:
+        mysql_exporter:
+          restart: always
+          image: prom/mysqld-exporter
+          network_mode: bridge
+          extra_hosts:
+            bdd: "{{ item.ip }}"
+          environment:
+            - DATA_SOURCE_NAME="{{ item.user }}:{{ item.pass }}@tcp(bdd:{{ item.port }})/"
+          ports:
+            - "{{ item.prom_port }}:9104"
+  with_items: "{{ mysql_hosts }}"
 
 
 # start exporter php

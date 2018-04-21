@@ -1,6 +1,7 @@
 ---
 # tasks file for node exporter
 
-- name: nodeexporter.yml 
-  roles:
-    - role: UnderGreen.prometheus-node-exporter
+ 
+- name: Run prometheus-node-exporter role
+  include_role:
+    name: UnderGreen.prometheus-node-exporter

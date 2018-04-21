@@ -7,14 +7,22 @@
 
 - name: Pull the latest version
   command: docker pull prom/mysqld-exporter
+  when: mysql_containers is defined or mysql_hosts is defined
 
 - name: copy the docker-compose file
   action: >
     template src=docker-compose-mysql.yml.j2 dest={{root_monitoring_mysql}}/docker-compose.yml
     mode=0644 owner=root group=root
   notify:
-    - start mysql exporter
+    - start mysql exporter for containers
+  when: mysql_containers is defined
 
-- name: make sure mysql exporter is started
+- name: make sure mysql exporter is started for containers
+  command: /bin/true
+  notify: start mysql exporter for containers
+  when: mysql_containers is defined
+
+- name: make sure mysql exporter is started for local mysql
   command: /bin/true
   notify: start mysql exporter
+  when: mysql_hosts is defined
